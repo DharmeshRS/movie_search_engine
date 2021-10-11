@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="movie" placeholder="Enter Movie Name"/>
+    <button onclick="getmoviedata()">Search Movie</button>
+
+    <div id="moviediv">
+
+    </div>
+
+    <script>
+        let parent=document.getElementById("moviediv")
+        async function getmoviedata(){
+        let moviename=document.getElementById("movie").value;
+        // console.log(city1)
+        // let moviename="spiderman"
+        console.log("start")
+        let res= await fetch(`http://www.omdbapi.com/?t=${moviename}&type=movie&apikey=810ed14a`)
+        let data=await res.json();
+        console.log(data)
+        console.log("end")
+        showmovie(data)
+    }
+
+   function showmovie(data){
+    //    let name=document.createElement("p")
+    //    name.innerText=data.Title
+
+    //    let year=document.createElement("p")
+    //    year.innerText=data.Year
+
+    //    let lang=document.createElement("p")
+    //    lang.innerText=data.Language
+        
+        
+    //    let actors=document.createElement("p")
+    //    actors.innerText=data.Actors
+
+    //    let production=document.createElement("p")
+    //    production.innerText=data.Production
+
+    //    let awards=document.createElement("p")
+    //    awards.innerText=data.Awards
+
+    //    let rating=document.createElement("p")
+    //    rating.innerText=data.imdbRating
+
+        let namebar=document.createElement("div")
+        let langbar=document.createElement("div")
+        let yearbar=document.createElement("div")
+        let actorbar=document.createElement("div")
+        let productbar=document.createElement("div")
+        let awardbar=document.createElement("div")
+        let ratingbar=document.createElement("div")
+        let recbar=document.createElement("div")
+
+        // namebar.innerText="name"
+        namebar.append("Name : "+ data.Title)
+        langbar.append("language : "+data.Language)
+        yearbar.append("Released Year : "+data.Year)
+        actorbar.append("Actors In Movies : "+data.Actors)
+        productbar.append("Production Of : "+data.Production)
+        awardbar.append("Awards : "+data.Awards)
+        ratingbar.append("Ratings : "+data.imdbRating)
+        if(data.imdbRating > 8.0){
+            console.log("recommended")
+            recbar.append("recommended")
+            parent.append(namebar,langbar,yearbar,actorbar,productbar,awardbar,ratingbar,recbar)
+        }else{
+            parent.append(namebar,langbar,yearbar,actorbar,productbar,awardbar,ratingbar)
+ 
+        }
+        
+
+          }
+    </script>
+</body>
+</html>
