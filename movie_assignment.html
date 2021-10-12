@@ -5,21 +5,72 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .searchbr{
+            height: 50px;
+            width: 1024px;
+            background-color: yellow;
+            margin: auto;
+            text-align: justify;
+            padding-top: 20px;
+        }
+        .searchbr > input{
+            height: 30px;
+            width: 500px;
+            border-radius: 100px;
+        }
+        #moviediv{
+            text-align: justify;
+            border: 1px solid black;
+            background-color: cornsilk;
+            
+        }
+        
+        img{
+            width: 300px;
+            height: 350px;
+        }
+
+        .maindiv{
+            display: flex;
+            text-align: justify;
+            padding-left: 250px;
+            
+        }
+        .maindiv >div >div {
+            padding: 5px;
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
-    <input type="text" id="movie" placeholder="Enter Movie Name"/>
+    <div class="" style="text-align: center;">
+        <div style="color: cornflowerblue;">
+        <h1>Fetch Data Using API</h1>
+    </div>
+    <div class="searchbr">
+        <input type="text" id="movie" placeholder="Enter Movie Name" required/>
     <button onclick="getmoviedata()">Search Movie</button>
+    </div>
+    <div class="maindiv">
+        
+        <div id="moviediv">
 
-    <div id="moviediv">
+        </div>
+        <div id="posterdiv">
+
+        </div>
 
     </div>
 
+    
+    <hr>
+
     <script>
-        let parent=document.getElementById("moviediv")
+        let parent=document.getElementById("posterdiv")
+        let parentp=document.getElementById("moviediv")
         async function getmoviedata(){
         let moviename=document.getElementById("movie").value;
-        // console.log(city1)
-        // let moviename="spiderman"
         console.log("start")
         let res= await fetch(`http://www.omdbapi.com/?t=${moviename}&type=movie&apikey=810ed14a`)
         let data=await res.json();
@@ -29,28 +80,16 @@
     }
 
    function showmovie(data){
-    //    let name=document.createElement("p")
-    //    name.innerText=data.Title
+       movie.innerHTML="";
+       moviediv.innerHTML="";
+       posterdiv.innerHTML="";
+    if(data.Error){
+        parent.append(data.Error)
+    }else{
 
-    //    let year=document.createElement("p")
-    //    year.innerText=data.Year
+        let img=document.createElement("img");
 
-    //    let lang=document.createElement("p")
-    //    lang.innerText=data.Language
-        
-        
-    //    let actors=document.createElement("p")
-    //    actors.innerText=data.Actors
-
-    //    let production=document.createElement("p")
-    //    production.innerText=data.Production
-
-    //    let awards=document.createElement("p")
-    //    awards.innerText=data.Awards
-
-    //    let rating=document.createElement("p")
-    //    rating.innerText=data.imdbRating
-
+        img.src=data.Poster;
         let namebar=document.createElement("div")
         let langbar=document.createElement("div")
         let yearbar=document.createElement("div")
@@ -59,8 +98,7 @@
         let awardbar=document.createElement("div")
         let ratingbar=document.createElement("div")
         let recbar=document.createElement("div")
-
-        // namebar.innerText="name"
+        img.append("img"+data.Poster)
         namebar.append("Name : "+ data.Title)
         langbar.append("language : "+data.Language)
         yearbar.append("Released Year : "+data.Year)
@@ -71,14 +109,15 @@
         if(data.imdbRating > 8.0){
             console.log("recommended")
             recbar.append("recommended")
-            parent.append(namebar,langbar,yearbar,actorbar,productbar,awardbar,ratingbar,recbar)
+            recbar.style.backgroundColor="red";
+            parent.append(recbar,namebar,langbar,yearbar,actorbar,productbar,awardbar,ratingbar)
+            parentp.append(img)
         }else{
             parent.append(namebar,langbar,yearbar,actorbar,productbar,awardbar,ratingbar)
- 
+            parentp.append(img)
         }
-        
-
           }
+        }
     </script>
 </body>
 </html>
