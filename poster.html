@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         body{
+            flex:1;
+            display: flex;
+             align-items: center;
+             height: 60vh;
+             
+            }
+        #container{
+            display: flex;
+            overflow-x: auto;
+            
+            height: 365px;
+            
+        }
+        img{
+          width: 200px;
+          height: 300px;
+          margin: 5px;
+          
+        }
+        #container >div >p{
+            height: 20px;
+            font-size: small;
+            font-weight: bolder;
+            margin-top: -10px;
+            
+        }
+        #container >div >p:nth-child(3){
+            position: relative;
+            width: 200px;
+            height: 20px;
+            background-color: rgb(255, 255, 255);
+            /* border-radius: 50%; */
+            text-align: center;
+            margin-top: -337px;
+            /* padding-top: 5px; */
+            /* margin-left: 10px; */
+            
+        }
+
+        #showdata{
+            display: grid;
+            grid-template-columns: auto auto;
+            margin: auto;
+            /* background-color: blue; */
+            /* border: 1px solid black; */
+            /* width: 1024px; */
+        }
+
+        #showdata > div{
+            margin: auto;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- <div id="con"> -->
+        <div>
+            <div>
+                <h2>Tranding/Popular Movies</h2>
+            </div>
+    
+            <div id="container">
+    
+            </div>
+        </div>
+        <div>
+            <div id="showdata">
+
+            </div>
+    </div>
+        
+    <script>
+       let parent=document.getElementById("container")
+        async function f(){
+        //  let res=await fetch(`https://api.themoviedb.org/4/list/1?api_key=5b9d11ecd78af801eff03c6428c1b2d1`)
+         let res=await fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=5b9d11ecd78af801eff03c6428c1b2d1`)
+        let data=await res.json()
+        console.log(data.results)
+        showmovie(data.results)
+        
+
+
+        }
+
+        f()
+        function showmovie(data){
+        data.forEach(function(el){
+
+            console.log(el.title)
+            console.log(el.poster_path)
+            console.log(el.vote_average)
+            let poster_path=el.poster_path
+            let imgpath=`https://image.tmdb.org/t/p/original/${poster_path}`
+            let pdiv=document.createElement("div")
+
+            let img=document.createElement("img")
+            img.src=imgpath
+            img.onclick=function(){
+                alldata(el)
+
+            }
+            if(el.title==undefined){
+                var ptitle=document.createElement("p")
+                ptitle.innerText=el.name
+            }else{
+                var ptitle=document.createElement("p")
+                ptitle.innerText=el.title
+            }
+            
+
+            let pvote=document.createElement("p")
+            pvote.innerHTML="rating:<b>&#x2605</b>"+el.vote_average
+
+            pdiv.append(img,ptitle,pvote)
+
+            parent.append(pdiv)
+            // parent.append(img,ptitle)
+        });
+
+        }
+        
+        parentt=document.getElementById("showdata")
+        async function alldata(data){
+            parent.innerHTML=null;
+            console.log("showid",data)
+            let poster_path=data.poster_path
+            let imgpath=`https://image.tmdb.org/t/p/original/${poster_path}`
+            let pdiv=document.createElement("div")
+            let pdata=document.createElement("div")
+
+
+            let img=document.createElement("img")
+            img.src=imgpath
+            if(data.title==undefined){
+                var ptitle=document.createElement("p")
+                ptitle.innerText=data.name
+            }else{
+                var ptitle=document.createElement("p")
+                ptitle.innerText=data.title
+            }
+            
+
+            let pvote=document.createElement("p")
+            pvote.innerHTML="rating:<b>&#x2605</b>"+data.vote_average
+
+            let mtype=document.createElement("p")
+            mtype.innerHTML="Media -type :"+data.media_type
+
+            let origin=document.createElement("p")
+            origin.innerHTML="Original Language :"+data.original_language
+
+            let overview=document.createElement("p")
+            overview.innerHTML="Briefly Overview :"+data.overview
+
+            let original_name=document.createElement("p")
+            original_name.innerHTML="Original Name:"+data.original_name
+
+            let backbtn=document.createElement("button")
+            backbtn.textContent="Back-to-main"
+            backbtn.onclick=function(){
+                location.reload();
+            }
+            
+            pdiv.append(img)
+            pdata.append(ptitle,mtype,origin,overview,original_name,pvote,backbtn)
+            parentt.append(pdiv,pdata)
+            // parent.append(img,ptitle)
+        };
+
+
+    </script>
+</body>
+</html>
+
+<!-- backdrop_path: "/oaGvjB0DvdhXhOAuADfHb261ZHa.jpg"
+first_air_date: "2021-09-17"
+genre_ids: (3) [10759, 9648, 18]
+id: 93405
+media_type: "tv"
+name: "Squid Game"
+origin_country: ['KR']
+original_language: "ko"
+original_name: "오징어 게임"
+overview: "Hundreds of cash-strapped players accept a strange invitation to compete in children's games—with high stakes. But, a tempting prize awaits the victor."
+popularity: 6925.988
+poster_path: "/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg"
+vote_average: 7.9
+vote_count: 7339 -->
